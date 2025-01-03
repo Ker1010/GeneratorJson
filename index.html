@@ -1,0 +1,339 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="Medic/Boostrap/css/bootstrap.css">
+<script src="Medic/Boostrap/js/bootstrap.js"></script>
+<link href="Medic/Google/google.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en" class="darklight" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Format generator</title>
+    <link rel="icon" type="x-icon" href="Medic/Image/icon.png">
+</head>
+
+<body>
+    <div class="container mainbanner">
+        <main role="main" class="mt-5">
+            <div class="row">
+                <form class="col-lg-6">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-9">
+                                <label for="Simbrief">Simbrief</label>
+                                <input type="text" class="form-control sumbrief" id="Simbrief"
+                                    placeholder="ID / Username">
+                            </div>
+                            <div class="col-3">
+                                <label for="ImportRoute">Route</label>
+                                <button type="button" id="ImportRoute"
+                                    class="btn btn-success inputimport w-100">Import</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Format">Format</label>
+                        <select disabled class="form-select" id="Format">
+                            <option selected>Open this select menu</option>
+                            <option value="1">Format 1</option>
+                            <option value="2">Format 2</option>
+                        </select>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Title</label>
+                        <input type="text" value="飛行小聚" class="form-control inputtitle" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Title">
+                    </div>
+                    <div class="form-group">
+                        <label for="aircrafticao">Aircraft</label>
+                        <input type="text" class="form-control inputaircraft" id="aircrafticao"
+                            aria-describedby="emailHelp" placeholder="ICAO / Name">
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label for="Depature">Depature</label>
+                            <input type="text" class="form-control inputdeparture" id="Depature"
+                                placeholder="ICAO / IATA">
+                        </div>
+                        <div class="col form-group">
+                            <label for="Arrival">Arrival</label>
+                            <input type="text" class="form-control inputarrival" id="Arrival" placeholder="ICAO / IATA">
+                        </div>
+                        <div class="col form-group">
+                            <label for="FlightTime">Flight Time</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control inputflighttime" id="FlightTime"
+                                    placeholder="HH:MM">
+                                <span class="input-group-text" id="basic-addon2">hr</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="FlightRoute">Route</label>
+                        <textarea class="form-control inputroute" id="FlightRoute" rows="3"></textarea>
+                    </div>
+                </form>
+                <form class="col-lg-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea disabled class="form-control output" rows="21"
+                            id="exampleFormControlTextarea1"></textarea>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-success inputcopy">Copy</button>
+                            <button class="btn btn-danger inputdelete">Delete & Clear</button>
+                        </div>
+                        <div>
+                            <button id="myButton" title="Light mode" class="btn lightdarkmode">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-sun" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <p>v 0.1.0 / Copyright © 2025 by Ker</p>
+                </form>
+            </div>
+        </main>
+    </div>
+    <div id="image" class="bg-image backgroundimage" style="background-image: url('Medic/Image/ys.png');
+        height: 100vh; width: 100vw; background-size: cover; transition: opacity 2s; opacity: 0;">
+    </div>
+</body>
+
+</html>
+
+<script>
+    $(".backgroundimage").hide();
+    var darkmode = true;
+    var already = false;
+    var route = "";
+    var aircrafticao = "";
+    var aircraftname = "";
+    var departureicao = "";
+    var departureiata = "";
+    var departurerwy = "";
+    var arrivalicao = "";
+    var arrivaliata = "";
+    var arrivalrwy = "";
+    var flighttime = "";
+    updateJSON()
+    $(".inputimport").unbind().click(function () {
+        var simbrief = $(".sumbrief").val()
+        $.ajax({
+            url: "https://www.simbrief.com/api/xml.fetcher.php?userid=" + simbrief, // Replace with your SimBrief username
+            dataType: 'xml',
+            success: function (response) {
+                var OFP = $(response).find('OFP');
+                route = OFP.find('general').find('route').text();
+                aircrafticao = OFP.find('aircraft').find('icaocode').text();
+                aircraftname = OFP.find('aircraft').find('name').text();
+                departureicao = OFP.find('origin').find('icao_code').text();
+                departureiata = OFP.find('origin').find('iata_code').text();
+                departurerwy = OFP.find('origin').find('rwy').text();
+                arrivalicao = OFP.find('destination').find('icao_code').text();
+                arrivaliata = OFP.find('destination').find('iata_code').text();
+                arrivalrwy = OFP.find('origin').find('rwy').text();
+                flighttime = OFP.find('times').find('est_time_enroute').text() / 60;
+                var hours = Math.floor(flighttime / 60);
+                var minutes = Math.round(flighttime % 60).toString().padStart(2, '0');
+                var formattedTime = hours + ":" + minutes;
+                flighttime = formattedTime
+                $(".inputaircraft").val(aircrafticao + " / " + aircraftname)
+                $(".inputdeparture").val(departureicao + " / " + departureiata)
+                $(".inputarrival").val(arrivalicao + " / " + arrivaliata)
+                $(".inputroute").val(route)
+                $(".inputflighttime").val(flighttime)
+                updateJSON()
+            },
+            error: function (xhr, status, error) {
+                $.ajax({
+                    url: "https://www.simbrief.com/api/xml.fetcher.php?username=" + simbrief, // Replace with your SimBrief username
+                    dataType: 'xml',
+                    success: function (response) {
+                        var OFP = $(response).find('OFP');
+                        route = OFP.find('general').find('route').text();
+                        aircrafticao = OFP.find('aircraft').find('icaocode').text();
+                        aircraftname = OFP.find('aircraft').find('name').text();
+                        departureicao = OFP.find('origin').find('icao_code').text();
+                        departureiata = OFP.find('origin').find('iata_code').text();
+                        departurerwy = OFP.find('origin').find('rwy').text();
+                        arrivalicao = OFP.find('destination').find('icao_code').text();
+                        arrivaliata = OFP.find('destination').find('iata_code').text();
+                        arrivalrwy = OFP.find('origin').find('rwy').text();
+                        flighttime = OFP.find('times').find('est_time_enroute').text() / 60;
+                        var hours = Math.floor(flighttime / 60);
+                        var minutes = Math.round(flighttime % 60).toString().padStart(2, '0');
+                        var formattedTime = hours + ":" + minutes;
+                        flighttime = formattedTime
+                        $(".inputaircraft").val(aircrafticao + " / " + aircraftname)
+                        $(".inputdeparture").val(departureicao + " / " + departureiata)
+                        $(".inputarrival").val(arrivalicao + " / " + arrivaliata)
+                        $(".inputroute").val(route)
+                        $(".inputflighttime").val(flighttime)
+                        updateJSON()
+                    },
+                })
+            }
+        });
+    })
+
+    $(".lightdarkmode").click(function (e) {
+        e.preventDefault()
+        if (darkmode == true) {
+            $(".darklight").attr("data-bs-theme", "light")
+            darkmode = false
+        }
+        else {
+            $(".darklight").attr("data-bs-theme", "dark")
+            darkmode = true
+        }
+    })
+
+
+    // $(".selectevent").change(function () {
+    //     var value = $(this).val()
+    //     if (value == "1") {
+    //         $(".inputsubtitle").val("")
+    //         $(".inputsubtitle").prop("disabled", null)
+    //     }
+    //     else {
+    //         $(".inputsubtitle").val(value)
+    //         $(".inputsubtitle").prop("disabled", "true")
+    //     }
+    // })
+
+    $(".inputdeparture, .inputarrival, .inputflighttime, .inputroute, .inputaircraft, .inputtitle").keyup(updateJSON);
+
+    function updateJSON() {
+        console.log("updateJSON")
+        var inputtitle = $(".inputtitle").val()
+        var inputroute = $(".inputroute").val()
+        var flighttime = $(".inputflighttime").val()
+        var jsonData = [
+            {
+                "type": "card",
+                "theme": "secondary",
+                "size": "lg",
+                "color": '#D7F7F5',
+                "modules": [
+                    {
+                        "type": "header",
+                        "text": {
+                            "type": "plain-text",
+                            "content": inputtitle
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "plain-text",
+                            "content": aircrafticao + " / " + aircraftname
+                        }
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "paragraph",
+                            "cols": 3,
+                            "fields": [
+                                {
+                                    "type": "kmarkdown",
+                                    "content": "**起飞机场**\n" + departureicao + " / " + departureiata
+                                },
+                                {
+                                    "type": "kmarkdown",
+                                    "content": "**目的机场**\n" + arrivalicao + " / " + arrivaliata
+                                },
+                                {
+                                    "type": "kmarkdown",
+                                    "content": "**巡航时间**\n" + flighttime + "小时"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "kmarkdown",
+                            "content": "**飞行航路**\n" + "`" + departureicao + "/" + departurerwy + "\n" + inputroute + "\n" + arrivalicao + "/" + arrivalrwy + "`"
+                        }
+                    }
+                ]
+            }
+        ];
+        $(".output").text(JSON.stringify(jsonData, null, 2));
+    }
+
+    $(".inputcopy").click(function (e) {
+        e.preventDefault()
+        var getvalue = $(".output").val()
+        navigator.clipboard.writeText(getvalue)
+    })
+
+    $(".inputdelete").click(function (e) {
+        e.preventDefault()
+        $(".selectevent").val("1")
+        $(".inputdeparture, .inputarrival, .inputroute, .inputflighttime").val("")
+        $(".sumbrief").focus()
+        route = "";
+        aircrafticao = "";
+        aircraftname = "";
+        departureicao = "";
+        departureiata = "";
+        departurerwy = "";
+        arrivalicao = "";
+        arrivaliata = "";
+        arrivalrwy = "";
+        flighttime = "";
+        updateJSON()
+    })
+
+    let clickTimes = [];
+    const maxTimeBetweenClicks = 500; // Max time between clicks in ms
+
+    const button = document.getElementById('myButton');
+
+    button.addEventListener('click', () => {
+        const currentTime = Date.now();
+        clickTimes.push(currentTime);
+
+        // Keep only the last 3 clicks
+        if (clickTimes.length > 3) {
+            clickTimes.shift();
+        }
+
+        // Check if the last 3 clicks are within the allowed time
+        if (
+            clickTimes.length === 3 &&
+            (clickTimes[2] - clickTimes[0] <= maxTimeBetweenClicks) && darkmode == false
+        ) {
+            if (already == false) {
+                $(".mainbanner").hide()
+                setTimeout(() => {
+                    $(".backgroundimage").show();
+                    image.style.opacity = 1;
+                    setTimeout(() => {
+                        $(".backgroundimage").hide();
+                        $(".mainbanner").show();
+                        already = true
+                    }, 5000);
+                }, 3000);
+                clickTimes = []; // Reset after detecting 3 quick clicks
+            }
+        }
+    });
+</script>
