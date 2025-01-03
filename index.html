@@ -71,7 +71,8 @@
                     </div>
                     <div class="form-group">
                         <label for="FlightRoute">Route</label>
-                        <textarea class="form-control inputroute" id="FlightRoute" rows="3"></textarea>
+                        <textarea class="form-control inputroute" wrap="off" autocorrect="off" autocapitalize="off"
+                            id="FlightRoute" rows="3"></textarea>
                     </div>
                 </form>
                 <form class="col-lg-6">
@@ -84,6 +85,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <button class="btn btn-success inputcopy">Copy</button>
+                            <button class="btn btn-primary inputopen">Copy and Open</button>
                             <button class="btn btn-danger inputdelete">Delete & Clear</button>
                         </div>
                         <div>
@@ -98,7 +100,7 @@
                     </div>
                     <br>
                     <br>
-                    <p>v 0.1.0 / Copyright © 2025 by Ker</p>
+                    <p>v 0.1.1 / Copyright © 2025 by Ker</p>
                 </form>
             </div>
         </main>
@@ -131,59 +133,44 @@
             url: "https://www.simbrief.com/api/xml.fetcher.php?userid=" + simbrief, // Replace with your SimBrief username
             dataType: 'xml',
             success: function (response) {
-                var OFP = $(response).find('OFP');
-                route = OFP.find('general').find('route').text();
-                aircrafticao = OFP.find('aircraft').find('icaocode').text();
-                aircraftname = OFP.find('aircraft').find('name').text();
-                departureicao = OFP.find('origin').find('icao_code').text();
-                departureiata = OFP.find('origin').find('iata_code').text();
-                departurerwy = OFP.find('origin').find('rwy').text();
-                arrivalicao = OFP.find('destination').find('icao_code').text();
-                arrivaliata = OFP.find('destination').find('iata_code').text();
-                arrivalrwy = OFP.find('origin').find('rwy').text();
-                flighttime = OFP.find('times').find('est_time_enroute').text() / 60;
-                var hours = Math.floor(flighttime / 60);
-                var minutes = Math.round(flighttime % 60).toString().padStart(2, '0');
-                var formattedTime = hours + ":" + minutes;
-                flighttime = formattedTime
-                $(".inputaircraft").val(aircrafticao + " / " + aircraftname)
-                $(".inputdeparture").val(departureicao + " / " + departureiata)
-                $(".inputarrival").val(arrivalicao + " / " + arrivaliata)
-                $(".inputroute").val(route)
-                $(".inputflighttime").val(flighttime)
-                updateJSON()
+                importdata(response)
             },
             error: function (xhr, status, error) {
                 $.ajax({
                     url: "https://www.simbrief.com/api/xml.fetcher.php?username=" + simbrief, // Replace with your SimBrief username
                     dataType: 'xml',
                     success: function (response) {
-                        var OFP = $(response).find('OFP');
-                        route = OFP.find('general').find('route').text();
-                        aircrafticao = OFP.find('aircraft').find('icaocode').text();
-                        aircraftname = OFP.find('aircraft').find('name').text();
-                        departureicao = OFP.find('origin').find('icao_code').text();
-                        departureiata = OFP.find('origin').find('iata_code').text();
-                        departurerwy = OFP.find('origin').find('rwy').text();
-                        arrivalicao = OFP.find('destination').find('icao_code').text();
-                        arrivaliata = OFP.find('destination').find('iata_code').text();
-                        arrivalrwy = OFP.find('origin').find('rwy').text();
-                        flighttime = OFP.find('times').find('est_time_enroute').text() / 60;
-                        var hours = Math.floor(flighttime / 60);
-                        var minutes = Math.round(flighttime % 60).toString().padStart(2, '0');
-                        var formattedTime = hours + ":" + minutes;
-                        flighttime = formattedTime
-                        $(".inputaircraft").val(aircrafticao + " / " + aircraftname)
-                        $(".inputdeparture").val(departureicao + " / " + departureiata)
-                        $(".inputarrival").val(arrivalicao + " / " + arrivaliata)
-                        $(".inputroute").val(route)
-                        $(".inputflighttime").val(flighttime)
-                        updateJSON()
+                        importdata(response)
                     },
                 })
             }
         });
     })
+
+    function importdata(reponse) {
+        var OFP = $(reponse).find('OFP');
+        route = OFP.find('general').find('route').text();
+        aircrafticao = OFP.find('aircraft').find('icaocode').text();
+        aircraftname = OFP.find('aircraft').find('name').text();
+        departureicao = OFP.find('origin').find('icao_code').text();
+        departureiata = OFP.find('origin').find('iata_code').text();
+        departurerwy = OFP.find('origin').find('plan_rwy').text();
+        console.log(departurerwy)
+        arrivalicao = OFP.find('destination').find('icao_code').text();
+        arrivaliata = OFP.find('destination').find('iata_code').text();
+        arrivalrwy = OFP.find('destination').find('plan_rwy').text();
+        flighttime = OFP.find('times').find('est_time_enroute').text() / 60;
+        var hours = Math.floor(flighttime / 60);
+        var minutes = Math.round(flighttime % 60).toString().padStart(2, '0');
+        var formattedTime = hours + ":" + minutes;
+        flighttime = formattedTime
+        $(".inputaircraft").val(aircrafticao + " / " + aircraftname)
+        $(".inputdeparture").val(departureicao + " / " + departureiata)
+        $(".inputarrival").val(arrivalicao + " / " + arrivaliata)
+        $(".inputroute").val(route)
+        $(".inputflighttime").val(flighttime)
+        updateJSON()
+    }
 
     $(".lightdarkmode").click(function (e) {
         e.preventDefault()
@@ -271,6 +258,18 @@
                             "type": "kmarkdown",
                             "content": "**飞行航路**\n" + "`" + departureicao + "/" + departurerwy + "\n" + inputroute + "\n" + arrivalicao + "/" + arrivalrwy + "`"
                         }
+                    },
+                    {
+                        "type": "divider"
+                    },
+                    {
+                        "type": "context",
+                        "elements": [
+                            {
+                                "type": "kmarkdown",
+                                "content": "[生成类似航路](https://dispatch.simbrief.com/options/custom?orig=" + departureicao + "&dest=" + arrivalicao + "&route=" + inputroute + ")"
+                            }
+                        ]
                     }
                 ]
             }
@@ -282,6 +281,13 @@
         e.preventDefault()
         var getvalue = $(".output").val()
         navigator.clipboard.writeText(getvalue)
+    })
+
+    $(".inputopen").click(function (e) {
+        e.preventDefault()
+        var getvalue = $(".output").val()
+        navigator.clipboard.writeText(getvalue)
+        window.open("https://www.kookapp.cn/tools/message-builder.html#/card")
     })
 
     $(".inputdelete").click(function (e) {
