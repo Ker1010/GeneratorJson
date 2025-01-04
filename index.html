@@ -74,6 +74,26 @@
                         <textarea class="form-control inputroute" wrap="off" autocorrect="off" autocapitalize="off"
                             id="FlightRoute" rows="3"></textarea>
                     </div>
+                    <hr />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-9">
+                                <label for="Description">Description</label>
+                                <input type="text" class="form-control inputdescription" id="Description"
+                                    placeholder="Text">
+                            </div>
+                            <div class="col-3">
+                                <label for="AddDesc">Add</label>
+                                <button type="button" id="AddDesc"
+                                    class="btn btn-primary inputappend w-100">Append</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <ul class="list-group listdescription">
+
+                        </ul>
+                    </div>
                 </form>
                 <form class="col-lg-6">
                     <div class="form-group">
@@ -100,7 +120,8 @@
                     </div>
                     <br>
                     <br>
-                    <p>v 0.1.1 / Copyright © 2025 by Ker</p>
+                    <p>v 0.2.0 / <a href="https://github.com/Ker1010/GeneratorJson/blob/main/LICENSE"
+                            class="text-decoration-none" target="_blank">Copyright © 2025 by Ker</a></p>
                 </form>
             </div>
         </main>
@@ -114,6 +135,7 @@
 
 <script>
     $(".backgroundimage").hide();
+    $(".sumbrief").val(document.cookie);
     var darkmode = true;
     var already = false;
     var route = "";
@@ -126,9 +148,19 @@
     var arrivaliata = "";
     var arrivalrwy = "";
     var flighttime = "";
+    var Description = {};
+    var desctext = "";
     updateJSON()
+    if (document.cookie != "") {
+        postdata(document.cookie)
+    }
     $(".inputimport").unbind().click(function () {
         var simbrief = $(".sumbrief").val()
+        document.cookie = simbrief;
+        postdata(simbrief)
+    })
+
+    function postdata(simbrief) {
         $.ajax({
             url: "https://www.simbrief.com/api/xml.fetcher.php?userid=" + simbrief, // Replace with your SimBrief username
             dataType: 'xml',
@@ -145,7 +177,7 @@
                 })
             }
         });
-    })
+    }
 
     function importdata(reponse) {
         var OFP = $(reponse).find('OFP');
@@ -155,7 +187,6 @@
         departureicao = OFP.find('origin').find('icao_code').text();
         departureiata = OFP.find('origin').find('iata_code').text();
         departurerwy = OFP.find('origin').find('plan_rwy').text();
-        console.log(departurerwy)
         arrivalicao = OFP.find('destination').find('icao_code').text();
         arrivaliata = OFP.find('destination').find('iata_code').text();
         arrivalrwy = OFP.find('destination').find('plan_rwy').text();
@@ -184,6 +215,57 @@
         }
     })
 
+    $(".inputappend").unbind().click(function (e) {
+        e.preventDefault()
+        var inputdescription = $(".inputdescription").val()
+        if (inputdescription.trim() == "" || inputdescription == null) {
+            return
+        }
+        desctext = desctext + "- " + inputdescription + "\n"
+        Description = {
+            "type": "section",
+            "text": {
+                "type": "kmarkdown",
+                "content": "**备注**\n" + desctext
+            }
+        }
+        $(".inputdescription").val("")
+        $(".listdescription").append(`<li class="list-group-item d-flex justify-content-between align-items-center">
+                                - ${inputdescription}
+                                <button class="btn btn-danger btndelete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </li>`)
+        $(".btndelete").unbind().click(function (e) {
+            e.preventDefault();
+            var deletedDescription = $(this).parent().text().trim();
+            console.log(deletedDescription)
+            $(this).parent().remove();
+            desctext = desctext.replace(deletedDescription + "\n", "");
+            if (desctext.trim() == "") {
+                Description = {};
+            }
+            else {
+                Description = {
+                    "type": "section",
+                    "text": {
+                        "type": "kmarkdown",
+                        "content": "**备注**\n" + desctext
+                    }
+                };
+            }
+            updateJSON();
+        });
+        updateJSON()
+    })
+
+
 
     // $(".selectevent").change(function () {
     //     var value = $(this).val()
@@ -200,10 +282,10 @@
     $(".inputdeparture, .inputarrival, .inputflighttime, .inputroute, .inputaircraft, .inputtitle").keyup(updateJSON);
 
     function updateJSON() {
-        console.log("updateJSON")
         var inputtitle = $(".inputtitle").val()
         var inputroute = $(".inputroute").val()
         var flighttime = $(".inputflighttime").val()
+        var inputdeparture = $(".inputdeparture").val()
         var jsonData = [
             {
                 "type": "card",
@@ -262,6 +344,7 @@
                     {
                         "type": "divider"
                     },
+                    ...(Object.keys(Description).length > 0 ? [Description] : []),
                     {
                         "type": "context",
                         "elements": [
@@ -293,7 +376,7 @@
     $(".inputdelete").click(function (e) {
         e.preventDefault()
         $(".selectevent").val("1")
-        $(".inputdeparture, .inputarrival, .inputroute, .inputflighttime").val("")
+        $(".inputdeparture, .inputarrival, .inputroute, .inputflighttime, .inputaircraft").val("")
         $(".sumbrief").focus()
         route = "";
         aircrafticao = "";
